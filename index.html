@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Practica divisiones con decimales</title>
+<style>
+:root{--bg:#fff8e7;--card:#fff;--ink:#2b2a33;--muted:#6b6a75;--accent:#6c4cff;--ok:#1f9d55;--bad:#d64545;--line:#e6dcc3;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1b26;--card:#292636;--ink:#f3f1fa;--muted:#aaa7bb;--accent:#9b85ff;--ok:#4cc57f;--bad:#ff7b7b;--line:#3d3a4d}}
+:root[data-theme="dark"]{--bg:#1d1b26;--card:#292636;--ink:#f3f1fa;--muted:#aaa7bb;--accent:#9b85ff;--ok:#4cc57f;--bad:#ff7b7b;--line:#3d3a4d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Trebuchet MS",system-ui,sans-serif;display:flex;justify-content:center;padding:16px}
+.wrap{width:100%;max-width:520px}
+h1{font-size:1.5rem;text-align:center;margin:8px 0 14px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px}
+.modes{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.modes button{flex:1 1 30%;padding:8px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-size:.9rem;cursor:pointer}
+.modes button.on{border-color:var(--accent);background:var(--accent);color:#fff}
+.stats{display:flex;justify-content:space-between;color:var(--muted);font-size:.95rem;margin-bottom:6px}
+.prob{font-size:2.6rem;text-align:center;margin:14px 0;font-weight:bold;letter-spacing:1px}
+.row{display:flex;gap:8px}
+input{flex:1;font-size:1.6rem;padding:10px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink);min-width:0;text-align:center}
+.btn{font-size:1.1rem;padding:10px 16px;border-radius:12px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+.btn.alt{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+.msg{min-height:3.2em;margin-top:12px;font-size:1.05rem;line-height:1.4}
+.ok{color:var(--ok)}.bad{color:var(--bad)}
+.hint{background:var(--bg);border-radius:12px;padding:10px;margin-top:8px;font-size:.98rem}
+.tools{display:flex;gap:8px;margin-top:10px}
+.tools .btn{flex:1}
+.vid{background:var(--bg);border:2px solid var(--accent);border-radius:14px;padding:14px;margin-top:8px;text-align:center}.vid .t{min-height:3.6em;font-size:1.05rem}.vid .big{font-size:2rem;font-weight:bold;margin:6px 0;min-height:2.6rem}.cm{color:var(--bad);font-size:1.4em}.fade{animation:f .5s}@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}.bar{height:6px;background:var(--line);border-radius:3px}.bar i{display:block;height:100%;width:0;background:var(--accent);border-radius:3px;transition:width .5s}
+.cas{display:flex;justify-content:center;font-family:Consolas,monospace;font-size:1.7rem;text-align:left;line-height:1.35;margin:8px 0}.cas .L{padding-right:10px}.cas .R{border-left:3px solid var(--ink);padding-left:10px}.cas .dv{border-bottom:3px solid var(--ink);margin-bottom:2px;min-width:3ch}.cc{display:inline-block;width:0;position:relative;left:-.35ch;color:var(--bad);font-weight:bold}.hl{color:var(--accent)}
+.wh{background:#ffe27a;color:#222;border-radius:4px;padding:0 2px}
+.ce{display:inline-block;width:1ch;position:relative;text-align:center}.cr{color:var(--bad)}.nv{position:absolute;left:0;top:-.8em;font-size:.55em;font-style:normal;color:var(--ok);font-weight:bold;white-space:nowrap}.tn{position:absolute;left:-.6ch;top:-.55em;font-size:.55em;font-style:normal;color:var(--ok);font-weight:bold}.mi{display:inline-block;width:0;position:relative;left:-1.1ch}.rl{display:inline-block;border-top:3px solid var(--ink)}.cas .L>div{margin-top:.45em}
+.bx{display:inline-block;border:2px solid var(--ink);border-radius:6px;padding:0 3px;margin-left:-3px}.custom{display:flex;gap:8px;margin-bottom:8px}
+</style></head><body><div class="wrap">
+<h1>➗ ¡Practiquemos divisiones!</h1>
+<div class="card">
+<div class="modes" id="modes">
+<button data-m="a" class="on">Coma en el dividendo</button>
+<button data-m="b">Coma en el divisor</button>
+<button data-m="c">Coma en ambos</button>
+<button data-m="r">Mezcla</button>
+</div></div>
+<div class="card"><div style="font-size:.95rem;margin-bottom:8px">✏️ Pon tu propia división</div>
+<div class="custom"><input id="cA" inputmode="decimal" placeholder="Dividendo (80,5)"><input id="cB" inputmode="decimal" placeholder="Divisor (3,5)"></div>
+<button class="btn" id="cGo" style="width:100%">Practicar esta división</button><div class="msg" id="cMsg" style="min-height:0;margin-top:8px"></div></div>
+<div class="card">
+<div class="stats"><span id="n">Ejercicio 1 de 10</span><span id="sc">⭐ 0</span></div>
+<div class="prob" id="prob"></div>
+<div class="row"><input id="ans" inputmode="decimal" autocomplete="off" placeholder="Tu respuesta"><button class="btn" id="chk">Revisar</button></div>
+<div class="msg" id="msg"></div>
+<div class="tools"><button class="btn alt" id="hintBtn">💡 Pista</button><button class="btn alt" id="resBtn">✅ Resultado</button><button class="btn alt" id="next">Siguiente ▶</button></div>
+</div></div>
+<script>
+var cus=false,mode="a",idx=0,score=0,tries=0,cur=null,done=false,TOTAL=10;
+function ri(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function fmt(x,d){return x.toFixed(d).replace(".",",")}
+function qs(x){return String(Math.round(x*100)/100).replace(".",",")}
+function make(){
+ var m=mode==="r"?["a","b","c"][ri(0,2)]:mode,D,d,q,dd,dend,ddec,vdec;
+ if(m==="a"){D=ri(11,60);var k=ri(11,99);if(k%10==0)k++;q=k/10;d=D;dend=D*k/10;vdec=1;ddec=0}
+ else if(m==="b"){var mm=ri(11,99);if(mm%10==0)mm++;d=mm/10;q=ri(2,30);dend=mm*q/10;vdec=1;ddec=1}
+ else{var mm2=ri(11,99);if(mm2%10==0)mm2++;var k2=ri(11,99);if(k2%10==0)k2++;d=mm2/10;q=k2/10;dend=mm2*k2/100;vdec=2;ddec=1}
+ var dnd=Math.round(dend*100)/100;
+ var dec=(m==="a")?1:(m==="b")?1:2;
+ var divDec=(m==="a")?0:1;
+ return {dividend:dnd,divisor:d,q:Math.round(q*10)/10,dd:dec,vd:divDec,m:m};
+}
+function show(){
+ cus=false;cur=make();tries=0;done=false;
+ document.getElementById("prob").textContent=fmt(cur.dividend,cur.dd)+" ÷ "+fmt(cur.divisor,cur.vd);
+ document.getElementById("n").textContent="Ejercicio "+(idx+1)+" de "+TOTAL;
+ document.getElementById("sc").textContent="⭐ "+score;
+ document.getElementById("msg").innerHTML="";
+ var a=document.getElementById("ans");a.value="";a.focus();
+}
+function hint(){
+ var s=cur.vd,e=Math.max(cur.dd,cur.vd),f=Math.pow(10,e);
+ var h;
+ if(cur.m==="a")h="El divisor no tiene coma, así que divide normal. Cuando bajes la primera cifra decimal, ¡pon la coma en el cociente!";
+ else{
+  var A=Math.round(cur.dividend*f),B=Math.round(cur.divisor*f);
+  h="Para quitar la coma del divisor, multiplica ambos números por "+f+": queda <b>"+A+" ÷ "+B+"</b>. Luego divide normal.";
+ }
+ document.getElementById("msg").innerHTML='<div class="hint">💡 '+h+'</div>';
+}
+function check(){
+ if(done)return;
+ var v=parseFloat(document.getElementById("ans").value.replace(",","."));
+ var msg=document.getElementById("msg");
+ if(isNaN(v)){msg.innerHTML='<span class="bad">Escribe un número 🙂</span>';return}
+ if(Math.abs(v-cur.q)<(cur.tol||0.0001)){
+  done=true;if(!cus)score+=tries===0?1:0;
+  msg.innerHTML='<span class="ok">¡Correcto! 🎉 '+fmt(cur.dividend,cur.dd)+' ÷ '+fmt(cur.divisor,cur.vd)+' = '+qs(cur.q)+'</span>';
+  document.getElementById("sc").textContent="⭐ "+score;
+ }else{
+  tries++;
+  if(tries>=2){done=true;msg.innerHTML='<span class="bad">No pasa nada. La respuesta era <b>'+qs(cur.q)+'</b>. ¡Vamos con otra!</span>'}
+  else msg.innerHTML='<span class="bad">Casi. Inténtalo otra vez o toca 💡 Pista.</span>';
+ }
+}
+function next(){
+ if(!done&&tries<2){document.getElementById("msg").innerHTML='<span class="bad">Primero resuelve este (o toca Revisar).</span>';return}
+ if(cus){cus=false;show();return}idx++;
+ if(idx>=TOTAL){
+  var t=score>=9?"¡Eres una campeona! 🏆":score>=6?"¡Muy bien! 👏":"¡Sigue practicando, vas mejorando! 💪";
+  document.getElementById("prob").textContent=score+" / "+TOTAL;
+  document.getElementById("msg").innerHTML=t+'<br>Toca Siguiente para jugar otra vez.';
+  idx=-1;score=0;done=true;tries=2;cur=cur;return;
+ }
+ show();
+}
+var vt=null;
+function tr(e,B,cu){
+ var bd=String(B).split("").reverse().map(Number),cd=String(cu).split("").reverse().map(Number),pd=[],ms=[],car=0,j;
+ for(j=0;j<bd.length;j++){var v=e*bd[j]+car;pd.push(v%10);ms.push(e+" × "+bd[j]+(car?" + "+car+" que llevaba":"")+" = "+v+(v>=10?" (anoto "+v%10+" y llevo "+Math.floor(v/10)+")":""));car=Math.floor(v/10)}
+ if(car){pd.push(car);ms.push("Bajo el "+car+" que llevaba")}
+ if(pd.length>cd.length)return e+" × "+B+" = "+e*B+", tiene más cifras que "+cu+". Se pasa ❌";
+ var s="",b=0;
+ for(j=0;j<cd.length;j++){
+  var p=j<pd.length?pd[j]:0,top=cd[j]-b;
+  if(j<pd.length)s+=ms[j]+". ";
+  if(top<p){
+   if(j===cd.length-1)return s+"Al "+cd[j]+(b?" (que quedó en "+top+")":"")+" no le alcanza para "+p+" y ya no hay a quién pedirle prestado. No alcanza ❌";
+   s+="Al "+cd[j]+" no le alcanza para "+p+": le prestamos 1 del "+cd[j+1]+" y queda "+(top+10)+" − "+p+" = "+(top+10-p)+". ";b=1;
+  }else{
+   if(j<pd.length||b)s+=(b?"El "+cd[j]+" quedó en "+top+": ":"")+top+" − "+p+" = "+(top-p)+". ";
+   b=0;
+  }
+ }
+ return s;
+}
+var voiceOn=true,spTok=0;
+function clean(t){return t.replace(/<[^>]*>/g,"").split("×").join(" por ").split("−").join(" menos ").split("÷").join(" entre ").split("=").join(" es igual a ").split("+").join(" más ").split("❌").join("").split("✅").join("").split("→").join(" queda ")}
+function speak(t,cb){
+ var my=++spTok;
+ if(!window.speechSynthesis||!window.SpeechSynthesisUtterance){setTimeout(function(){if(my===spTok)cb()},5500);return}
+ var u=new SpeechSynthesisUtterance(clean(t));u.lang="es-ES";u.rate=0.9;u.pitch=1.1;
+ var vs=speechSynthesis.getVoices();
+ for(var k=0;k<vs.length;k++){if(vs[k].lang.indexOf("es")===0){u.voice=vs[k];u.lang=vs[k].lang;break}}
+ u.onend=function(){if(my===spTok)cb()};u.onerror=u.onend;
+ speechSynthesis.speak(u);
+}
+var W=[],wi=0,paused=false,stepCb=null,stepDone=false;
+function renderText(t){W=t.split(" ");wi=0;stepDone=false;document.getElementById("vtx").innerHTML=W.map(function(w,k){return '<span id="w'+k+'">'+w+'</span>'}).join(" ")}
+function hl(k){for(var j=0;j<W.length;j++){var e=document.getElementById("w"+j);if(e)e.className=j===k?"wh":""}if(k>=0)wi=k}
+function beginStep(cb){stepCb=cb;if(!paused)speakFrom(0);else{spTok++;if(window.speechSynthesis)speechSynthesis.cancel()}}
+function speakFrom(k){
+ spTok++;var my=spTok,got=false;clearTimeout(vt);
+ if(window.speechSynthesis)speechSynthesis.cancel();
+ stepDone=false;
+ function fin(){if(my!==spTok)return;stepDone=true;hl(-1);wi=Math.max(W.length-1,0);if(stepCb)stepCb()}
+ if(!voiceOn||!window.speechSynthesis||!window.SpeechSynthesisUtterance){hl(k);vt=setTimeout(fin,5500);return}
+ var sp="",off=[];
+ for(var j=k;j<W.length;j++){off.push(sp.length);sp+=clean(W[j])+" "}
+ var u=new SpeechSynthesisUtterance(sp);u.lang="es-ES";u.rate=0.9;u.pitch=1.1;
+ var vs=speechSynthesis.getVoices();
+ for(var q=0;q<vs.length;q++){if(vs[q].lang.indexOf("es")===0){u.voice=vs[q];u.lang=vs[q].lang;break}}
+ u.onboundary=function(ev){if(my!==spTok)return;got=true;var m=0;for(var z=0;z<off.length;z++){if(off[z]<=ev.charIndex)m=z}hl(k+m)};
+ u.onend=fin;u.onerror=fin;
+ hl(k);speechSynthesis.speak(u);
+ function tick(){if(my!==spTok||stepDone)return;if(!got&&wi<W.length-1)hl(wi+1);setTimeout(tick,420)}
+ setTimeout(tick,420);
+}
+function showVideo(direct){
+ clearTimeout(vt);
+ var c=cur,hasD=c.vd>0,dend=fmt(c.dividend,c.dd),dor=fmt(c.divisor,c.vd),S=[],A2=dend,B=Math.round(c.divisor);
+ function cm(s){return String(s).replace(',','<span class="cm">,</span>')}
+ if(hasD){var f=Math.pow(10,c.vd);B=Math.round(c.divisor*f);A2=fmt(c.dividend*f,Math.max(c.dd-c.vd,0));
+  S.push({t:'Primero quitamos la coma del divisor: la movemos '+c.vd+' lugar a la derecha.',h:cm(dend)+' ÷ <u>'+cm(dor)+'</u> → '+B});
+  S.push({t:'Y movemos la coma del dividendo los mismos lugares.',h:cm(dend)+' → <u>'+cm(A2)+'</u>'});
+ }else S.push({t:'El divisor no tiene coma. ¡Podemos empezar!',h:cm(dend)+' ÷ '+dor});
+ var p=A2.split(','),ds=(p[0]+(p[1]||'')).split('').map(Number),dp=p[0].length;
+ function dh(){var s='';ds.forEach(function(d,x){s+=(x==dp?'<span class="cc">,</span>':'')+(MK&&x<n?cell(d,{c:CR[x],lb:LB[x],k:TN[x],cc:CC[x],y:(x<=HX&&x>=HX2)}):d)});return s}
+ function cas(r,q,top){return '<div class="cas"><div class="L"><div>'+(top||dh())+'</div>'+r.join('')+'</div><div class="R"><div class="dv">'+String(B).split('').map(function(d,x){return String(B).length-1-x===Hb?'<span class="wh">'+d+'</span>':d}).join('')+'</div><div>'+q+'</div></div></div>'}
+ function ce(t){return '<span class="ce">'+t+'</span>'}
+ function cell(d,s){s=s||{};var y=s.y?' wh':'',st=s.cc?' style="color:'+s.cc+'"':'';
+  return '<span class="ce'+y+'">'+(s.k?'<i class="tn">'+s.k+'</i>':'')+(s.c?'<s class="cr"'+st+'>'+d+'</s>'+(s.lb?'<i class="nv"'+st+'>'+s.lb+'</i>':''):d)+'</span>'}
+ function rw(a,end,pre){return '<div style="padding-left:'+Math.max(end-a.length+1,0)+'ch">'+(pre||'')+a.join('')+'</div>'}
+ function srow(s,end,hl){return rw(s.split('').map(function(d,x){return hl&&x==s.length-1?'<span class="ce hl">'+d+'</span>':ce(d)}),end)}
+ function finRow(){var ok=true,a=[];for(var x=0;x<n;x++){var j=n-1-x;if(res[j]===undefined)ok=false;a.push(ce(res[j]))}
+  return ok?'<div style="padding-left:'+Math.max(k-n+1,0)+'ch"><span class="bx">'+a.join('')+'</span></div>':srow(String(r),k,false)}
+ var done=[],hist=[],dhSnap='',seenExt=[],first=true,k=0,cu=ds[0],q='',qc=false,ext=0,CR=[],LB=[],TN=[],CC=[],ic=0,PAL=['#3b82f6','#e6a700','#a855f7','#14b8a6'],HX=-1,HX2=-1,Hb=-1,MK=false,n,o;
+ while(cu<B&&k<ds.length-1){k++;cu=cu*10+ds[k]}
+ while(true){
+  var cs=String(cu),base=first?[]:done.slice(0,-1);n=cs.length;o=cs.split('').map(Number).reverse();MK=first;var repeat=false;if(k>=ds.length){repeat=seenExt.indexOf(cu)>=0;seenExt.push(cu)}
+  CR=[];LB=[];TN=[];CC=[];
+  var mino=function(){var a=[];for(var x=0;x<n;x++)a.push(cell(o[n-1-x],{c:CR[x],lb:LB[x],k:TN[x],cc:CC[x],y:(x<=HX&&x>=HX2)}));return rw(a,k)};
+  var view=function(rev,pdA,res,qq){var a=[],b=[];
+   for(var x=0;x<n;x++){var j=n-1-x,sh=pdA[j]!==undefined;a.push(sh?ce(pdA[j]):ce('&nbsp;'));
+    var rv=j<rev&&res[j]!==undefined,lz=false;
+    
+    b.push(rv&&!lz?ce(res[j]):ce('&nbsp;'))}
+   return cas(base.concat(first?[]:[mino()],[rw(a,k,'<span class="mi">−</span>'),'<div style="padding-left:'+Math.max(k-n+1,0)+'ch"><span class="rl">'+b.join('')+'</span></div>']),qq)};
+  res=[];var cap0='',nq=q,qd,r,nd=-1;HX=-1;HX2=-1;Hb=-1;
+  if(k>=dp&&!qc){qc=true;nq+='<span class="cc">,</span>';cap0+='Bajamos una cifra decimal: ¡ponemos la coma en el cociente! '}
+  if(first&&k>0&&cu>=B)cap0+='Tomamos '+cs+' porque es mayor que el '+B+'. ';
+  var fd=Number(String(B)[0]),lead=Number(n>String(B).length?cs.slice(0,2):cs[0]),e=Math.min(9,Math.floor(lead/fd)),ef=cu<B?0:e;
+  while(ef*B>cu)ef--;
+  qd=ef;r=cu-ef*B;
+  if(k+1<ds.length)nd=ds[k+1];else if(r!==0&&ext<6&&!repeat){nd=0;ext++}
+  var tail=' Queda '+r+'.'+(nd>=0?(k+1>=ds.length?' Agregamos un 0 y':'')+' Bajamos el '+nd+'.':(repeat&&r!==0?' ¡El residuo se repite, así que el '+qd+' se repetiría siempre! Lo escribimos solo 2 veces y terminamos.':''));
+  if(cu<B){
+   S.push({t:cap0+'Como '+cs+' es menor que '+B+', ponemos 0 en el cociente.'+tail,h:cas(base.concat(first?[]:[mino()]),nq+'0')});
+  }else{
+   S.push({t:cap0+'Miro el primer dígito del divisor: '+fd+'. En la tabla del '+fd+' busco lo que se acerque a '+lead+' sin pasarse: '+fd+' × '+e+' = '+fd*e+'.',h:cas(base.concat(first?[]:[mino()]),q)});
+   var tries=0;
+   for(;e>=1;e--){
+    var pre=(tries++?'Probemos':'Pruebo')+' con '+e+': ',bd=String(B).split('').reverse().map(Number),pd=[],ms=[],car=0,j;
+    for(j=0;j<bd.length;j++){var v=e*bd[j]+car;pd.push(v%10);ms.push(e+' × '+bd[j]+(car?' + '+car+' que llevaba':'')+' = '+v+(v>=10?' (anoto '+v%10+' y llevo '+Math.floor(v/10)+')':''));car=Math.floor(v/10)}
+    if(car){pd.push(car);ms.push('Bajo el '+car+' que llevaba')}
+    CR=[];LB=[];TN=[];CC=[];
+    if(pd.length>n){S.push({t:pre+e+' × '+B+' = '+e*B+', tiene más cifras que '+cs+'. Se pasa ❌',h:view(0,[],[],nq+'<span class="wh">'+e+'</span>')});continue}
+    var res=[],fail=false;
+    var R=cu,TD=nq+'<span class="wh">'+e+'</span>';
+    for(j=0;j<bd.length;j++){
+     var x=n-1-j,vj=e*bd[j],useAll=j===bd.length-1,d=useAll?R:R%10,Lg=useAll?0:Math.floor(R/10),kk=d>=vj?0:Math.ceil((vj-d)/10),t='',pa=[],vs=String(vj);
+     for(var z=0;z<vs.length;z++)pa[j+z]=Number(vs[vs.length-1-z]);
+     HX=x;HX2=useAll?0:x;Hb=j;
+     var mt=(j===0?pre:'')+e+' × '+bd[j]+' = '+vj+'. En el dividendo tenemos el '+d+'. ';
+     if(useAll){
+      if(d>=vj){var D=d-vj,ds2=String(D);for(var w2=j;w2<n;w2++){var ix=ds2.length-1-(w2-j);res[w2]=ix>=0?Number(ds2[ix]):0}R=0;t=mt+'Sacamos la diferencia: '+d+' − '+vj+' = '+D+'.'}
+      else{fail=true;t=mt+'Como '+d+' es menor que '+vj+', se pasó ❌ Probemos con '+(e-1)+'.'}
+     }
+     else if(kk===0){res[j]=d-vj;R=Lg;t=mt+'Restamos: '+d+' − '+vj+' = '+res[j]+'.'}
+     else{
+      S.push({t:mt,h:view(j,pa,res,TD)});
+      var give=Math.min(kk,Lg),R2=Lg-give,gs=String(R2);
+      TN[x]=give;
+      for(var pp=0;pp<x;pp++){CR[pp]=true;LB[pp]='';CC[pp]=PAL[ic%PAL.length]}
+      for(var u=0;u<gs.length&&u<x;u++)LB[x-1-u]=gs[gs.length-1-u];
+      if(kk>Lg){fail=true;t=Lg>0?'Como '+d+' es menor que '+vj+', tomamos lo que queda a la izquierda: tengo '+Lg+' y se lo prestamos todo al '+d+', que se convierte en '+(d+10*Lg)+'. Pero '+(d+10*Lg)+' sigue siendo menor que '+vj+': se pasó ❌ Probemos con '+(e-1)+'.':'Como '+d+' es menor que '+vj+' y ya no queda nada a la izquierda para prestar. No alcanza ❌ Probemos con '+(e-1)+'.'}
+      else{res[j]=d+10*kk-vj;R=R2;t='Como '+d+' es menor que '+vj+', tomamos lo que queda a la izquierda: tengo '+Lg+'. Entonces presto '+kk+' al '+d+' para que sea '+(d+10*kk)+'. Sacamos la diferencia: '+(d+10*kk)+' − '+vj+' = '+res[j]+'. Luego tachamos el '+Lg+' y colocamos '+Lg+' − '+kk+' = '+R2+'.'}
+     }
+     S.push({t:t,h:view(useAll&&!fail?n:j+1,pa,res,TD)});
+     if(fail)break;
+    }
+    if(!fail){
+     var rs2=String(R),lt=n-bd.length;
+     for(var w=0;w<lt;w++)if(res[bd.length+w]===undefined)res[bd.length+w]=w<rs2.length?Number(rs2[rs2.length-1-w]):0;
+     HX=-1;HX2=-1;Hb=-1;
+     S.push({t:(R>0?'Lo que queda a la izquierda es '+R+': lo bajamos. ':'')+'¡Sirve!'+tail,h:view(n,[],res,nq+ef)});
+    }
+    if(!fail)break;
+   }
+  }
+  if(first)dhSnap=dh();else hist.push(mino());MK=false;q=nq+qd;
+  var rs=nd>=0?(r===0?String(nd):String(r)+nd):String(r);
+  done=base.concat([srow(rs,nd>=0?k+1:k,nd>=0)]);
+  if(nd<0){S.push({t:r===0?'¡Residuo 0! La respuesta es '+qs(c.q)+' ✅':(repeat&&r!==0?'El resultado es '+q.replace(/<[^>]*>/g,'')+'… (el '+qd+' se repite). Redondeado a 2 decimales: '+qs(c.q)+'.':'Quedó residuo '+r+'.'),h:cas(hist.concat([finRow()]),q,dhSnap)});break}
+  k++;ic++;cu=Number(rs);first=false;
+ }
+ document.getElementById('msg').innerHTML='<div class="vid"><div class="t" id="vtx"></div><div class="big" id="vbg"></div><div class="bar"><i id="vpr"></i></div><div class="tools"><button class="btn alt" id="vp1">◀</button><button class="btn alt" id="vp2">⏸</button><button class="btn alt" id="vp3">▶</button><button class="btn alt" id="vp5">⏪5s</button><button class="btn alt" id="vp4">🔊</button></div></div>';
+ var i=0,play=true;paused=false;spTok++;if(window.speechSynthesis)speechSynthesis.cancel();
+ function st(m){clearTimeout(vt);i=Math.max(0,Math.min(S.length-1,m));
+  document.getElementById('vbg').innerHTML=S[i].h;renderText(S[i].t);
+  document.getElementById('vpr').style.width=((i+1)/S.length*100)+'%';
+  beginStep(function(){if(play&&i<S.length-1)vt=setTimeout(function(){st(i+1)},900)})}
+ document.getElementById('vp1').onclick=function(){st(i-1)};
+ document.getElementById('vp3').onclick=function(){st(i+1)};
+ document.getElementById('vp4').onclick=function(){voiceOn=!voiceOn;this.textContent=voiceOn?'🔊':'🔇';st(i)};
+ document.getElementById('vp5').onclick=function(){if(!voiceOn){st(i-1);return}var t=Math.max(0,wi-11);if(paused)hl(t);else speakFrom(t)};
+ document.getElementById('vp2').onclick=function(){
+  if(!paused){paused=true;spTok++;if(window.speechSynthesis)speechSynthesis.cancel();clearTimeout(vt);this.textContent='▶'}
+  else{paused=false;play=true;this.textContent='⏸';if(stepDone){if(i<S.length-1)st(i+1);else st(0)}else speakFrom(wi)}
+ };
+ if(direct){paused=true;document.getElementById('vp2').textContent='▶';st(S.length-1)}else st(0);
+}
+function parseN(t){t=String(t).trim().replace(",",".");if(!/^\d+(\.\d{1,2})?$/.test(t))return null;return {v:parseFloat(t),d:(t.split(".")[1]||"").length}}
+document.getElementById("cGo").onclick=function(){
+ var a=parseN(document.getElementById("cA").value),b=parseN(document.getElementById("cB").value),cm2=document.getElementById("cMsg");
+ function er(m){cm2.innerHTML='<span class="bad">'+m+'</span>'}
+ if(!a||!b){er("Escribe números con máximo 2 decimales (ej. 80,5 y 3,5).");return}
+ if(b.v===0){er("El divisor no puede ser 0.");return}
+ if(a.v<=0){er("El dividendo debe ser mayor que 0.");return}
+ if(a.v>=100000||b.v>=1000){er("Usa un dividendo menor a 100000 y un divisor menor a 1000.");return}
+ cm2.innerHTML="";
+ var q=Math.round(a.v/b.v*100)/100,ex=Math.abs(a.v/b.v-q)<1e-9;
+ if(idx<0){idx=0;score=0}
+ cur={dividend:a.v,divisor:b.v,q:q,dd:a.d,vd:b.d,m:"x",tol:ex?0.0001:0.0101};
+ cus=true;tries=0;done=false;
+ document.getElementById("prob").textContent=fmt(cur.dividend,cur.dd)+" ÷ "+fmt(cur.divisor,cur.vd);
+ document.getElementById("n").textContent="Tu división";
+ document.getElementById("sc").textContent="⭐ "+score;
+ document.getElementById("msg").innerHTML=ex?"":"Si no es exacta, redondea a 2 decimales.";
+ var an=document.getElementById("ans");an.value="";an.focus();
+};
+document.getElementById("chk").onclick=check;
+document.getElementById("hintBtn").onclick=function(){if(cur&&idx>=0)showVideo()};
+document.getElementById("resBtn").onclick=function(){if(cur&&idx>=0){done=true;showVideo(true)}};
+document.getElementById("next").onclick=function(){if(idx===-1){idx=0;score=0;show();return}next()};
+document.getElementById("ans").onkeydown=function(e){if(e.key==="Enter")check()};
+document.querySelectorAll("#modes button").forEach(function(b){b.onclick=function(){
+ document.querySelectorAll("#modes button").forEach(function(x){x.classList.remove("on")});
+ b.classList.add("on");mode=b.dataset.m;idx=0;score=0;show();}});
+show();
+</script></body></html>
